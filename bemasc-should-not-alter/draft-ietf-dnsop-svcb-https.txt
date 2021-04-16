@@ -5,9 +5,9 @@
 DNSOP Working Group                                          B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 10 October 2021                                       E. Nygren
+Expires: 18 October 2021                                       E. Nygren
                                                      Akamai Technologies
-                                                            8 April 2021
+                                                           16 April 2021
 
 
  Service binding and parameter specification via the DNS (DNS SVCB and
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 October 2021.
+   This Internet-Draft will expire on 18 October 2021.
 
 Copyright Notice
 
@@ -761,10 +761,11 @@ Table of Contents
 
 4.3.  General requirements
 
-   Recursive resolvers MAY treat the SvcParams portion of the SVCB RR as
-   opaque.  No part of this specification requires recursive resolvers
-   to alter their behavior based on its contents, even if the contents
-   are invalid.
+   Recursive resolvers MUST be able to convey SVCB records with
+   unrecognized SvcParamKeys or malformed SvcParamValues.  Resolvers MAY
+   treat the entire SvcParams portion of the record as opaque.  No part
+   of this specification requires recursive resolvers to alter their
+   behavior based on its contents, even if the contents are invalid.
 
    When responding to a query that includes the DNSSEC OK bit
    ([RFC3225]), DNSSEC-capable recursive and authoritative DNS servers
