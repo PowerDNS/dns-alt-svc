@@ -1345,8 +1345,9 @@ Table of Contents
 
    _8443._https 7200 IN HTTPS 1 . alpn=h3
 
-   These records also tell clients to replace the scheme with "https"
-   when loading http://simple.example or http://simple.example:8443.
+   These records also respectively tell clients to replace the scheme
+   with "https" when loading http://simple.example or
+   http://simple.example:8443.
 
 10.3.2.  Apex aliasing
 
