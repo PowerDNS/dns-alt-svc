@@ -1228,10 +1228,24 @@ available there.  The authors (gratefully) accept pull requests.<a href="#sectio
             </ul>
 </li>
           <li class="toc ulEmpty compact" id="section-toc.1-1.20">
-            <p id="section-toc.1-1.20.1"><a href="#section-appendix.d" class="xref">Appendix D</a>.  <a href="#name-change-history" class="xref">Change history</a></p>
+            <p id="section-toc.1-1.20.1"><a href="#section-appendix.d" class="xref">Appendix D</a>.  <a href="#name-test-vectors" class="xref">Test vectors</a></p>
+<ul class="toc ulEmpty compact">
+<li class="toc ulEmpty compact" id="section-toc.1-1.20.2.1">
+                <p id="section-toc.1-1.20.2.1.1"><a href="#section-d.1" class="xref">D.1</a>.  <a href="#name-aliasform" class="xref">AliasForm</a></p>
+</li>
+              <li class="toc ulEmpty compact" id="section-toc.1-1.20.2.2">
+                <p id="section-toc.1-1.20.2.2.1"><a href="#section-d.2" class="xref">D.2</a>.  <a href="#name-serviceform" class="xref">ServiceForm</a></p>
+</li>
+              <li class="toc ulEmpty compact" id="section-toc.1-1.20.2.3">
+                <p id="section-toc.1-1.20.2.3.1"><a href="#section-d.3" class="xref">D.3</a>.  <a href="#name-failure-cases" class="xref">Failure cases</a></p>
+</li>
+            </ul>
 </li>
           <li class="toc ulEmpty compact" id="section-toc.1-1.21">
-            <p id="section-toc.1-1.21.1"><a href="#section-appendix.e" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.21.1"><a href="#section-appendix.e" class="xref">Appendix E</a>.  <a href="#name-change-history" class="xref">Change history</a></p>
+</li>
+          <li class="toc ulEmpty compact" id="section-toc.1-1.22">
+            <p id="section-toc.1-1.22.1"><a href="#section-appendix.f" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -3431,205 +3445,490 @@ reduce implementation complexity.<a href="#section-c.4-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="change-history">
+<div id="test-vectors">
 <section id="section-appendix.d">
+      <h2 id="name-test-vectors">
+<a href="#section-appendix.d" class="section-number selfRef">Appendix D. </a><a href="#name-test-vectors" class="section-name selfRef">Test vectors</a>
+      </h2>
+<p id="section-appendix.d-1">These test vectors only contain the RDATA portion of SVCB/HTTPS records in
+presentation format, generic format (<span>[<a href="#RFC3597" class="xref">RFC3597</a>]</span>) and wire format. The wire
+format uses hexadecimal (\xNN) for each non-ascii byte. As the wireformat is
+long, it is broken into several lines.<a href="#section-appendix.d-1" class="pilcrow">¶</a></p>
+<div id="aliasform">
+<section id="section-d.1">
+        <h2 id="name-aliasform">
+<a href="#section-d.1" class="section-number selfRef">D.1. </a><a href="#name-aliasform" class="section-name selfRef">AliasForm</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-d.1-1">
+<pre>
+0 foo.example.com.
+
+\# 19 (
+00 00                                              ; priority
+03 66 6f 6f 07 65 78 61 6d 70 6c 65 03 63 6f 6d 00 ; target
+)
+
+\x00\x00                                           # priority
+\x03foo\x07example\x03com\x00                      # target
+</pre><a href="#section-d.1-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="serviceform">
+<section id="section-d.2">
+        <h2 id="name-serviceform">
+<a href="#section-d.2" class="section-number selfRef">D.2. </a><a href="#name-serviceform" class="section-name selfRef">ServiceForm</a>
+        </h2>
+<p id="section-d.2-1">The first form is the simple "use the ownername".<a href="#section-d.2-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.2-2">
+<pre>
+1 .
+
+\# 3 (
+00 01      ; priority
+00         ; target (root label)
+)
+
+\x00\x01   # priority
+\x00       # target, root label
+</pre><a href="#section-d.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-d.2-3">This vector only has a port.<a href="#section-d.2-3" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.2-4">
+<pre>
+16 foo.example.com. port=53
+
+\# 25 (
+00 10                                              ; priority
+03 66 6f 6f 07 65 78 61 6d 70 6c 65 03 63 6f 6d 00 ; target
+00 03                                              ; key 3
+00 02                                              ; length 2
+00 35                                              ; value
+)
+
+\x00\x10                                           # priority
+\x03foo\x07example\x03com\x00                      # target
+\x00\x03                                           # key 3
+\x00\x02                                           # length: 2 bytes
+\x00\x35                                           # value
+</pre><a href="#section-d.2-4" class="pilcrow">¶</a>
+</div>
+<p id="section-d.2-5">This example has a key that is not registered, its value is unquoted.<a href="#section-d.2-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.2-6">
+<pre>
+1 foo.example.com. key667=hello
+
+\# 28 (
+00 01                                              ; priority
+03 66 6f 6f 07 65 78 61 6d 70 6c 65 03 63 6f 6d 00 ; target
+02 9b                                              ; key 667
+00 05                                              ; length 5
+68 65 6c 6c 6f                                     ; value
+)
+
+\x00\x01                                           # priority
+\x03foo\x07example\x03com\x00                      # target
+\x02\x9b                                           # key 667
+\x00\x05                                           # length 5
+hello                                              # value
+</pre><a href="#section-d.2-6" class="pilcrow">¶</a>
+</div>
+<p id="section-d.2-7">This example has a key that is not registered, its value is quoted and contains
+a decimal-escaped character.<a href="#section-d.2-7" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.2-8">
+<pre>
+1 foo.example.com. key667="hello\210qoo"
+
+\# 32 (
+00 01                                              ; priority
+03 66 6f 6f 07 65 78 61 6d 70 6c 65 03 63 6f 6d 00 ; target
+02 9b                                              ; key 667
+00 09                                              ; length 9
+68 65 6c 6c 6f d2 71 6f 6f                         ; value
+)
+
+\x00\x01                                           # priority
+\x03foo\x07example\x03com\x00                      # target
+\x02\x9b                                           # key 667
+\x00\x09                                           # length 9
+hello\xd2qoo                                       # value
+</pre><a href="#section-d.2-8" class="pilcrow">¶</a>
+</div>
+<p id="section-d.2-9">Here, two IPv6 hints are quoted in the presentation format.<a href="#section-d.2-9" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.2-10">
+<pre>
+1 foo.example.com. ipv6hint="2001:db8::1,2001:db8::53:1"
+
+\# 55 (
+00 01                                              ; priority
+03 66 6f 6f 07 65 78 61 6d 70 6c 65 03 63 6f 6d 00 ; target
+00 06                                              ; key 6
+00 20                                              ; length 32
+20 01 0d b8 00 00 00 00 00 00 00 00 00 00 00 01    ; first address
+20 01 0d b8 00 00 00 00 00 00 00 00 00 53 00 01    ; second address
+)
+
+\x00\x01                                           # priority
+\x03foo\x07example\x03com\x00                      # target
+\x00\x06                                           # key 6
+\x00\x20                                           # length 32
+\x20\x01\x0d\xb8\x00\x00\x00\x00
+     \x00\x00\x00\x00\x00\x00\x00\x01              # first address
+\x20\x01\x0d\xb8\x00\x00\x00\x00
+     \x00\x00\x00\x00\x00\x53\x00\x01              # second address
+</pre><a href="#section-d.2-10" class="pilcrow">¶</a>
+</div>
+<p id="section-d.2-11">This example shows a single IPv6 hint in IPv4 mapped IPv6 presentation
+format.<a href="#section-d.2-11" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.2-12">
+<pre>
+1 example.com. ipv6hint="2001:db8:ffff:ffff:ffff:ffff:198.51.100.100"
+
+\# 35 (
+00 01                                              ; priority
+07 65 78 61 6d 70 6c 65 03 63 6f 6d 00             ; target
+00 06                                              ; key 6
+00 10                                              ; length 16
+20 01 0d b8 ff ff ff ff ff ff ff ff c6 33 64 64    ; address
+)
+
+\x00\x01                                           # priority
+\x07example\x03com\x00                             # target
+\x00\x06                                           # key 6
+\x00\x10                                           # length 16
+\x20\x01\x0d\xb8\xff\xff\xff\xff
+     \xff\xff\xff\xff\xc6\x33\x64\x64              # address
+</pre><a href="#section-d.2-12" class="pilcrow">¶</a>
+</div>
+<p id="section-d.2-13">In the next vector, neither the SvcParamValues nor the mandatory keys are 
+sorted in presentation format, but are correctly sorted in the wire-format.<a href="#section-d.2-13" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.2-14">
+<pre>
+16 foo.example.org. (alpn=h2,h3-19 mandatory=ipv4hint,alpn
+                    ipv4hint=192.0.2.1)
+
+\# 48 (
+00 10                                              ; priority
+03 66 6f 6f 07 65 78 61 6d 70 6c 65 03 6f 72 67 00 ; target
+00 00                                              ; key 0
+00 04                                              ; param length 4
+00 01                                              ; value: key 1
+00 04                                              ; value: key 4
+00 01                                              ; key 1
+00 09                                              ; param length 9
+02                                                 ; alpn length 2
+68 32                                              ; alpn value
+05                                                 ; alpn length 5
+68 33 2d 31 39                                     ; alpn value
+00 04                                              ; key 4
+00 04                                              ; param length 4
+c0 00 02 01                                        ; param value
+)
+
+\x00\x10                                           # priority
+\x03foo\x07example\x03org\x00                      # target
+\x00\x00                                           # key 0
+\x00\x02                                           # param length 2
+\x00\x01                                           # value: key 1
+\x00\x01                                           # key 1
+\x00\x09                                           # param length 9
+\x02                                               # alpn length 2
+h2                                                 # alpn value
+\x05                                               # alpn length 5
+h3-19                                              # alpn value
+\x00\x04                                           # key 4
+\x00\x04                                           # param length 4
+\xc0\x00\x02\x01                                   # param value
+</pre><a href="#section-d.2-14" class="pilcrow">¶</a>
+</div>
+<p id="section-d.2-15">This last vector has an alpn value with an escaped comma and an escaped
+backslash in two presentation formats.<a href="#section-d.2-15" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.2-16">
+<pre>
+16 foo.example.org. alpn="f\\\\oo\\,bar,h2"
+16 foo.example.org. alpn=f\\\092oo\092,bar,h2
+
+\# 35 (
+00 10                                              ; priority
+03 66 6f 6f 07 65 78 61 6d 70 6c 65 03 6f 72 67 00 ; target
+00 01                                              ; key 1
+00 0c                                              ; param length 12
+08                                                 ; alpn length 8
+66 5c 6f 6f 2c 62 61 72                            ; alpn value
+02                                                 ; alpn length 2
+68 32                                              ; alpn value
+)
+
+\x00\x10                                           # priority
+\x03foo\x07example\x03org\x00                      # target
+\x00\x01                                           # key 1
+\x00\x0c                                           # param length 12
+\x08                                               # alpn length 8
+f\oo,bar                                           # alpn value
+\x02                                               # alpn length 2
+h2                                                 # alpn value
+</pre><a href="#section-d.2-16" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="failure-cases">
+<section id="section-d.3">
+        <h2 id="name-failure-cases">
+<a href="#section-d.3" class="section-number selfRef">D.3. </a><a href="#name-failure-cases" class="section-name selfRef">Failure cases</a>
+        </h2>
+<p id="section-d.3-1">In this subsection, example resource records are shown which are not
+compliant with this document. The various reasons for non-compliance
+are explained with each example.<a href="#section-d.3-1" class="pilcrow">¶</a></p>
+<p id="section-d.3-2">This example has multiple instances of the same
+SvcParamKey <a href="#presentation" class="xref">Section 2.1</a>.<a href="#section-d.3-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.3-3">
+<pre>
+example.com.   SVCB   1 foo.example.com. (
+                       key123=abc key123=def
+                       )
+</pre><a href="#section-d.3-3" class="pilcrow">¶</a>
+</div>
+<p id="section-d.3-4">In the next examples the SvcParamKeys are missing their values.<a href="#section-d.3-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.3-5">
+<pre>
+example.com.   SVCB   1 foo.example.com. mandatory
+example.com.   SVCB   1 foo.example.com. alpn
+example.com.   SVCB   1 foo.example.com. port
+example.com.   SVCB   1 foo.example.com. ipv4hint
+example.com.   SVCB   1 foo.example.com. ipv6hint
+</pre><a href="#section-d.3-5" class="pilcrow">¶</a>
+</div>
+<p id="section-d.3-6">The "no-default-alpn" SvcParamKey value MUST be empty (<a href="#alpn-key" class="xref">Section 6.1</a>).<a href="#section-d.3-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.3-7">
+<pre>
+example.com.   SVCB   1 foo.example.com. no-default-alpn=abc
+</pre><a href="#section-d.3-7" class="pilcrow">¶</a>
+</div>
+<p id="section-d.3-8">In this record a mandatory SvcParam is missing (<a href="#mandatory" class="xref">Section 7</a>).<a href="#section-d.3-8" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.3-9">
+<pre>
+example.com.   SVCB   1 foo.example.com. mandatory=key123
+</pre><a href="#section-d.3-9" class="pilcrow">¶</a>
+</div>
+<p id="section-d.3-10">The "mandatory" SvcParamKey MUST not be included in mandatory
+list (<a href="#mandatory" class="xref">Section 7</a>).<a href="#section-d.3-10" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.3-11">
+<pre>
+example.com.   SVCB   1 foo.example.com. mandatory=mandatory
+</pre><a href="#section-d.3-11" class="pilcrow">¶</a>
+</div>
+<p id="section-d.3-12">Here there are multiple instances of the same SvcParamKey in
+the mandatory list (<a href="#mandatory" class="xref">Section 7</a>).<a href="#section-d.3-12" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-d.3-13">
+<pre>
+example.com.   SVCB   1 foo.example.com. (
+                      mandatory=key123,key123 key123=abc
+                      )
+</pre><a href="#section-d.3-13" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="change-history">
+<section id="section-appendix.e">
       <h2 id="name-change-history">
-<a href="#section-appendix.d" class="section-number selfRef">Appendix D. </a><a href="#name-change-history" class="section-name selfRef">Change history</a>
+<a href="#section-appendix.e" class="section-number selfRef">Appendix E. </a><a href="#name-change-history" class="section-name selfRef">Change history</a>
       </h2>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.1">
-          <p id="section-appendix.d-1.1.1">draft-ietf-dnsop-svcb-https-04<a href="#section-appendix.d-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-appendix.e-1.1">
+          <p id="section-appendix.e-1.1.1">draft-ietf-dnsop-svcb-https-04<a href="#section-appendix.e-1.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.1.2.1">Simplify the IANA instructions (pure First Come First Served)<a href="#section-appendix.d-1.1.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.1.2.1">Simplify the IANA instructions (pure First Come First Served)<a href="#section-appendix.e-1.1.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.1.2.2">Recommend against publishing chains of &gt;8 aliases<a href="#section-appendix.d-1.1.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.1.2.2">Recommend against publishing chains of &gt;8 aliases<a href="#section-appendix.e-1.1.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.1.2.3">Clarify requirements for using SVCB with a transport proxy<a href="#section-appendix.d-1.1.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.1.2.3">Clarify requirements for using SVCB with a transport proxy<a href="#section-appendix.e-1.1.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.1.2.4">Adjust guidance for Port Prefix Naming<a href="#section-appendix.d-1.1.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.1.2.4">Adjust guidance for Port Prefix Naming<a href="#section-appendix.e-1.1.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.1.2.5">Minor editorial updates<a href="#section-appendix.d-1.1.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.1.2.5">Minor editorial updates<a href="#section-appendix.e-1.1.2.5" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.2">
-          <p id="section-appendix.d-1.2.1">draft-ietf-dnsop-svcb-https-03<a href="#section-appendix.d-1.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.2">
+          <p id="section-appendix.e-1.2.1">draft-ietf-dnsop-svcb-https-03<a href="#section-appendix.e-1.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.2.2.1">Simplified escaping of comma-separated values<a href="#section-appendix.d-1.2.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.2.2.1">Simplified escaping of comma-separated values<a href="#section-appendix.e-1.2.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.2.2.2">Reorganized client requirements<a href="#section-appendix.d-1.2.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.2.2.2">Reorganized client requirements<a href="#section-appendix.e-1.2.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.2.2.3">Added a warning about port filtering for cross-protocol attacks<a href="#section-appendix.d-1.2.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.2.2.3">Added a warning about port filtering for cross-protocol attacks<a href="#section-appendix.e-1.2.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.2.2.4">Clarified self-consistency rules for SvcParams<a href="#section-appendix.d-1.2.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.2.2.4">Clarified self-consistency rules for SvcParams<a href="#section-appendix.e-1.2.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.2.2.5">Added a non-normative mapping summary table for HTTPS<a href="#section-appendix.d-1.2.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.2.2.5">Added a non-normative mapping summary table for HTTPS<a href="#section-appendix.e-1.2.2.5" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.3">
-          <p id="section-appendix.d-1.3.1">draft-ietf-dnsop-svcb-https-02<a href="#section-appendix.d-1.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.3">
+          <p id="section-appendix.e-1.3.1">draft-ietf-dnsop-svcb-https-02<a href="#section-appendix.e-1.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.3.2.1">Added a Privacy Considerations section<a href="#section-appendix.d-1.3.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.3.2.1">Added a Privacy Considerations section<a href="#section-appendix.e-1.3.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.3.2.2">Adjusted resolution fallback description<a href="#section-appendix.d-1.3.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.3.2.2">Adjusted resolution fallback description<a href="#section-appendix.e-1.3.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.3.2.3">Clarified status of SvcParams in AliasMode<a href="#section-appendix.d-1.3.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.3.2.3">Clarified status of SvcParams in AliasMode<a href="#section-appendix.e-1.3.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.3.2.4">Improved advice on zone structuring and use with Alt-Svc<a href="#section-appendix.d-1.3.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.3.2.4">Improved advice on zone structuring and use with Alt-Svc<a href="#section-appendix.e-1.3.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.3.2.5">Improved examples, including a new Multi-CDN example<a href="#section-appendix.d-1.3.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.3.2.5">Improved examples, including a new Multi-CDN example<a href="#section-appendix.e-1.3.2.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.3.2.6">Reorganized text on value-list parsing and SvcPriority<a href="#section-appendix.d-1.3.2.6" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.3.2.6">Reorganized text on value-list parsing and SvcPriority<a href="#section-appendix.e-1.3.2.6" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.3.2.7">Improved phrasing and other editorial improvements throughout<a href="#section-appendix.d-1.3.2.7" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.3.2.7">Improved phrasing and other editorial improvements throughout<a href="#section-appendix.e-1.3.2.7" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.4">
-          <p id="section-appendix.d-1.4.1">draft-ietf-dnsop-svcb-https-01<a href="#section-appendix.d-1.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.4">
+          <p id="section-appendix.e-1.4.1">draft-ietf-dnsop-svcb-https-01<a href="#section-appendix.e-1.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.4.2.1">Added a "mandatory" SvcParamKey<a href="#section-appendix.d-1.4.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.4.2.1">Added a "mandatory" SvcParamKey<a href="#section-appendix.e-1.4.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.4.2.2">Added the ability to indicate that a service does not exist<a href="#section-appendix.d-1.4.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.4.2.2">Added the ability to indicate that a service does not exist<a href="#section-appendix.e-1.4.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.4.2.3">Adjusted resolution and ALPN algorithms<a href="#section-appendix.d-1.4.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.4.2.3">Adjusted resolution and ALPN algorithms<a href="#section-appendix.e-1.4.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.4.2.4">Major terminology revisions for "origin" and CamelCase names<a href="#section-appendix.d-1.4.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.4.2.4">Major terminology revisions for "origin" and CamelCase names<a href="#section-appendix.e-1.4.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.4.2.5">Revised ABNF<a href="#section-appendix.d-1.4.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.4.2.5">Revised ABNF<a href="#section-appendix.e-1.4.2.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.4.2.6">Include allocated RR type numbers<a href="#section-appendix.d-1.4.2.6" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.4.2.6">Include allocated RR type numbers<a href="#section-appendix.e-1.4.2.6" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.4.2.7">Various corrections, explanations, and recommendations<a href="#section-appendix.d-1.4.2.7" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.4.2.7">Various corrections, explanations, and recommendations<a href="#section-appendix.e-1.4.2.7" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.5">
-          <p id="section-appendix.d-1.5.1">draft-ietf-dnsop-svcb-https-00<a href="#section-appendix.d-1.5.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.5">
+          <p id="section-appendix.e-1.5.1">draft-ietf-dnsop-svcb-https-00<a href="#section-appendix.e-1.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.5.2.1">Rename HTTPSSVC RR to HTTPS RR<a href="#section-appendix.d-1.5.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.5.2.1">Rename HTTPSSVC RR to HTTPS RR<a href="#section-appendix.e-1.5.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.5.2.2">Rename "an SVCB" to "a SVCB"<a href="#section-appendix.d-1.5.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.5.2.2">Rename "an SVCB" to "a SVCB"<a href="#section-appendix.e-1.5.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.5.2.3">Removed "design considerations and open issues" section and some other "to be removed" text<a href="#section-appendix.d-1.5.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.5.2.3">Removed "design considerations and open issues" section and some other "to be removed" text<a href="#section-appendix.e-1.5.2.3" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.6">
-          <p id="section-appendix.d-1.6.1">draft-ietf-dnsop-svcb-httpssvc-03<a href="#section-appendix.d-1.6.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.6">
+          <p id="section-appendix.e-1.6.1">draft-ietf-dnsop-svcb-httpssvc-03<a href="#section-appendix.e-1.6.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.6.2.1">Revised chain length limit requirements<a href="#section-appendix.d-1.6.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.6.2.1">Revised chain length limit requirements<a href="#section-appendix.e-1.6.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.6.2.2">Revised IANA registry rules for SvcParamKeys<a href="#section-appendix.d-1.6.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.6.2.2">Revised IANA registry rules for SvcParamKeys<a href="#section-appendix.e-1.6.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.6.2.3">Require HTTPS clients to implement SNI<a href="#section-appendix.d-1.6.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.6.2.3">Require HTTPS clients to implement SNI<a href="#section-appendix.e-1.6.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.6.2.4">Update terminology for Encrypted ClientHello<a href="#section-appendix.d-1.6.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.6.2.4">Update terminology for Encrypted ClientHello<a href="#section-appendix.e-1.6.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.6.2.5">Clarifications: non-default ports, transport proxies, HSTS procedure, WebSocket behavior, wire format, IP hints, inner/outer ClientHello with ECH<a href="#section-appendix.d-1.6.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.6.2.5">Clarifications: non-default ports, transport proxies, HSTS procedure, WebSocket behavior, wire format, IP hints, inner/outer ClientHello with ECH<a href="#section-appendix.e-1.6.2.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.6.2.6">Various textual and ABNF corrections<a href="#section-appendix.d-1.6.2.6" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.6.2.6">Various textual and ABNF corrections<a href="#section-appendix.e-1.6.2.6" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.7">
-          <p id="section-appendix.d-1.7.1">draft-ietf-dnsop-svcb-httpssvc-02<a href="#section-appendix.d-1.7.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.7">
+          <p id="section-appendix.e-1.7.1">draft-ietf-dnsop-svcb-httpssvc-02<a href="#section-appendix.e-1.7.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.7.2.1">All changes to Alt-Svc have been removed<a href="#section-appendix.d-1.7.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.7.2.1">All changes to Alt-Svc have been removed<a href="#section-appendix.e-1.7.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.7.2.2">Expanded and reorganized examples<a href="#section-appendix.d-1.7.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.7.2.2">Expanded and reorganized examples<a href="#section-appendix.e-1.7.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.7.2.3">Priority zero is now the definition of AliasForm<a href="#section-appendix.d-1.7.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.7.2.3">Priority zero is now the definition of AliasForm<a href="#section-appendix.e-1.7.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.7.2.4">Repeated SvcParamKeys are no longer allowed<a href="#section-appendix.d-1.7.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.7.2.4">Repeated SvcParamKeys are no longer allowed<a href="#section-appendix.e-1.7.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.7.2.5">The "=" sign may be omitted in a key=value pair if the value is also empty<a href="#section-appendix.d-1.7.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.7.2.5">The "=" sign may be omitted in a key=value pair if the value is also empty<a href="#section-appendix.e-1.7.2.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.7.2.6">In the wire format, SvcParamKeys must be in sorted order<a href="#section-appendix.d-1.7.2.6" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.7.2.6">In the wire format, SvcParamKeys must be in sorted order<a href="#section-appendix.e-1.7.2.6" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.7.2.7">New text regarding how to handle resolution timeouts<a href="#section-appendix.d-1.7.2.7" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.7.2.7">New text regarding how to handle resolution timeouts<a href="#section-appendix.e-1.7.2.7" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.7.2.8">Expanded description of recursive resolver behavior<a href="#section-appendix.d-1.7.2.8" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.7.2.8">Expanded description of recursive resolver behavior<a href="#section-appendix.e-1.7.2.8" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.7.2.9">Much more precise description of the intended ALPN behavior<a href="#section-appendix.d-1.7.2.9" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.7.2.9">Much more precise description of the intended ALPN behavior<a href="#section-appendix.e-1.7.2.9" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.7.2.10">Match the HSTS specification's language on HTTPS enforcement<a href="#section-appendix.d-1.7.2.10" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.7.2.10">Match the HSTS specification's language on HTTPS enforcement<a href="#section-appendix.e-1.7.2.10" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.7.2.11">Removed 'esniconfig=""' mechanism and simplified ESNI connection logic<a href="#section-appendix.d-1.7.2.11" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.7.2.11">Removed 'esniconfig=""' mechanism and simplified ESNI connection logic<a href="#section-appendix.e-1.7.2.11" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.8">
-          <p id="section-appendix.d-1.8.1">draft-ietf-dnsop-svcb-httpssvc-01<a href="#section-appendix.d-1.8.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.8">
+          <p id="section-appendix.e-1.8.1">draft-ietf-dnsop-svcb-httpssvc-01<a href="#section-appendix.e-1.8.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.8.2.1">Reduce the emphasis on conversion between HTTPSSVC and Alt-Svc<a href="#section-appendix.d-1.8.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.8.2.1">Reduce the emphasis on conversion between HTTPSSVC and Alt-Svc<a href="#section-appendix.e-1.8.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.8.2.2">Make the "untrusted channel" concept more precise.<a href="#section-appendix.d-1.8.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.8.2.2">Make the "untrusted channel" concept more precise.<a href="#section-appendix.e-1.8.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.8.2.3">Make SvcFieldPriority = 0 the definition of AliasForm, instead of a requirement.<a href="#section-appendix.d-1.8.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.8.2.3">Make SvcFieldPriority = 0 the definition of AliasForm, instead of a requirement.<a href="#section-appendix.e-1.8.2.3" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.9">
-          <p id="section-appendix.d-1.9.1">draft-ietf-dnsop-svcb-httpssvc-00<a href="#section-appendix.d-1.9.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.9">
+          <p id="section-appendix.e-1.9.1">draft-ietf-dnsop-svcb-httpssvc-00<a href="#section-appendix.e-1.9.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.9.2.1">Document an optimization for optimistic pre-connection. (Chris Wood)<a href="#section-appendix.d-1.9.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.9.2.1">Document an optimization for optimistic pre-connection. (Chris Wood)<a href="#section-appendix.e-1.9.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.9.2.2">Relax IP hint handling requirements. (Eric Rescorla)<a href="#section-appendix.d-1.9.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.9.2.2">Relax IP hint handling requirements. (Eric Rescorla)<a href="#section-appendix.e-1.9.2.2" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.10">
-          <p id="section-appendix.d-1.10.1">draft-nygren-dnsop-svcb-httpssvc-00<a href="#section-appendix.d-1.10.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.10">
+          <p id="section-appendix.e-1.10.1">draft-nygren-dnsop-svcb-httpssvc-00<a href="#section-appendix.e-1.10.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.10.2.1">Generalize to an SVCB record, with special-case
+<li class="normal" id="section-appendix.e-1.10.2.1">Generalize to an SVCB record, with special-case
 handling for Alt-Svc and HTTPS separated out
-to dedicated sections.<a href="#section-appendix.d-1.10.2.1" class="pilcrow">¶</a>
+to dedicated sections.<a href="#section-appendix.e-1.10.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.10.2.2">Split out a separate HTTPSSVC record for
-the HTTPS use-case.<a href="#section-appendix.d-1.10.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.10.2.2">Split out a separate HTTPSSVC record for
+the HTTPS use-case.<a href="#section-appendix.e-1.10.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.10.2.3">Remove the explicit SvcRecordType=0/1 and instead
+            <li class="normal" id="section-appendix.e-1.10.2.3">Remove the explicit SvcRecordType=0/1 and instead
 make the AliasForm vs ServiceForm be implicit.
 This was based on feedback recommending against
-subtyping RR type.<a href="#section-appendix.d-1.10.2.3" class="pilcrow">¶</a>
+subtyping RR type.<a href="#section-appendix.e-1.10.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-appendix.d-1.10.2.4">Remove one optimization.<a href="#section-appendix.d-1.10.2.4" class="pilcrow">¶</a>
-</li>
-          </ul>
-</li>
-        <li class="normal" id="section-appendix.d-1.11">
-          <p id="section-appendix.d-1.11.1">draft-nygren-httpbis-httpssvc-03<a href="#section-appendix.d-1.11.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-appendix.d-1.11.2.1">Change redirect type for HSTS-style behavior
-from 302 to 307 to reduce ambiguities.<a href="#section-appendix.d-1.11.2.1" class="pilcrow">¶</a>
+            <li class="normal" id="section-appendix.e-1.10.2.4">Remove one optimization.<a href="#section-appendix.e-1.10.2.4" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.12">
-          <p id="section-appendix.d-1.12.1">draft-nygren-httpbis-httpssvc-02<a href="#section-appendix.d-1.12.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.11">
+          <p id="section-appendix.e-1.11.1">draft-nygren-httpbis-httpssvc-03<a href="#section-appendix.e-1.11.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.12.2.1">Remove the redundant length fields from the wire format.<a href="#section-appendix.d-1.12.2.1" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="section-appendix.d-1.12.2.2">Define a SvcDomainName of "." for SvcRecordType=1
-as being the HTTPSSVC RRNAME.<a href="#section-appendix.d-1.12.2.2" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="section-appendix.d-1.12.2.3">Replace "hq" with "h3".<a href="#section-appendix.d-1.12.2.3" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.11.2.1">Change redirect type for HSTS-style behavior
+from 302 to 307 to reduce ambiguities.<a href="#section-appendix.e-1.11.2.1" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.13">
-          <p id="section-appendix.d-1.13.1">draft-nygren-httpbis-httpssvc-01<a href="#section-appendix.d-1.13.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.12">
+          <p id="section-appendix.e-1.12.1">draft-nygren-httpbis-httpssvc-02<a href="#section-appendix.e-1.12.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.13.2.1">Fixes of record name.  Replace references to "HTTPSVC" with "HTTPSSVC".<a href="#section-appendix.d-1.13.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.12.2.1">Remove the redundant length fields from the wire format.<a href="#section-appendix.e-1.12.2.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-appendix.e-1.12.2.2">Define a SvcDomainName of "." for SvcRecordType=1
+as being the HTTPSSVC RRNAME.<a href="#section-appendix.e-1.12.2.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-appendix.e-1.12.2.3">Replace "hq" with "h3".<a href="#section-appendix.e-1.12.2.3" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
-        <li class="normal" id="section-appendix.d-1.14">
-          <p id="section-appendix.d-1.14.1">draft-nygren-httpbis-httpssvc-00<a href="#section-appendix.d-1.14.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-appendix.e-1.13">
+          <p id="section-appendix.e-1.13.1">draft-nygren-httpbis-httpssvc-01<a href="#section-appendix.e-1.13.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-appendix.d-1.14.2.1">Initial version<a href="#section-appendix.d-1.14.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-appendix.e-1.13.2.1">Fixes of record name.  Replace references to "HTTPSVC" with "HTTPSSVC".<a href="#section-appendix.e-1.13.2.1" class="pilcrow">¶</a>
+</li>
+          </ul>
+</li>
+        <li class="normal" id="section-appendix.e-1.14">
+          <p id="section-appendix.e-1.14.1">draft-nygren-httpbis-httpssvc-00<a href="#section-appendix.e-1.14.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-appendix.e-1.14.2.1">Initial version<a href="#section-appendix.e-1.14.2.1" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
@@ -3637,7 +3936,7 @@ as being the HTTPSSVC RRNAME.<a href="#section-appendix.d-1.12.2.2" class="pilcr
 </section>
 </div>
 <div id="authors-addresses">
-<section id="section-appendix.e">
+<section id="section-appendix.f">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
