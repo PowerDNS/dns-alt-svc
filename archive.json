@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-04-12T15:10:35.189391+00:00",
+  "timestamp": "2021-04-16T13:57:06.637763+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -24131,7 +24131,7 @@
       "labels": [],
       "body": "This change explains how to make SVCB play nicely with ECS, for both\r\nrecursive and authoritative servers.  The proposed behavior is\r\nconservative, staying fully compliant with RFC 7871 (ECS) while allowing\r\nimproved caching performance when it is safe to do so.",
       "createdAt": "2021-03-24T02:09:32Z",
-      "updatedAt": "2021-04-12T15:10:10Z",
+      "updatedAt": "2021-04-16T02:49:09Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "1b9fb2e671d04766595c81a5198e13472491c06c",
@@ -24896,6 +24896,39 @@
           "createdAt": "2021-04-12T14:33:00Z",
           "updatedAt": "2021-04-12T14:33:00Z",
           "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjMzNjYxNDIy",
+          "commit": {
+            "abbreviatedOid": "cff2ee0"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-04-12T15:14:08Z",
+          "updatedAt": "2021-04-12T15:14:08Z",
+          "comments": [
+            {
+              "originalPosition": 36,
+              "body": "OK.  The caching question is mostly independent of ECS, so I moved it to the preceding section and added the full quote from RFC 2181.",
+              "createdAt": "2021-04-12T15:14:08Z",
+              "updatedAt": "2021-04-12T15:14:08Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjM3MjkxMTUy",
+          "commit": {
+            "abbreviatedOid": "cff2ee0"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-04-16T02:49:09Z",
+          "updatedAt": "2021-04-16T02:49:09Z",
+          "comments": []
         }
       ]
     },
@@ -24953,13 +24986,13 @@
       "labels": [],
       "body": "Suggested by @sftcd",
       "createdAt": "2021-04-06T20:00:09Z",
-      "updatedAt": "2021-04-06T20:48:08Z",
+      "updatedAt": "2021-04-16T13:56:58Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "1b9fb2e671d04766595c81a5198e13472491c06c",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-prefix",
-      "headRefOid": "420b8b66d5f3041d465acedb2a8602ee7899bcec",
+      "headRefOid": "e4498fff11fe0a575f9bc7d6ad8d1106022b73ef",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -24978,6 +25011,46 @@
           "createdAt": "2021-04-06T20:48:08Z",
           "updatedAt": "2021-04-06T20:48:08Z",
           "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjM3MjkxNTYw",
+          "commit": {
+            "abbreviatedOid": "420b8b6"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-04-16T02:50:37Z",
+          "updatedAt": "2021-04-16T02:50:38Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "```suggestion\r\nto indicate that https://simple.example (and http://simple.example)\r\nuse HTTPS, and supports QUIC\r\n```",
+              "createdAt": "2021-04-16T02:50:37Z",
+              "updatedAt": "2021-04-16T13:56:38Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjM3MjkxOTEy",
+          "commit": {
+            "abbreviatedOid": "420b8b6"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-04-16T02:51:50Z",
+          "updatedAt": "2021-04-16T02:51:51Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "Corner-case that I'm not sure we cover.  What happens to http://simple.example:8443 in this case?  Does it also get forced to HTTPS?",
+              "createdAt": "2021-04-16T02:51:51Z",
+              "updatedAt": "2021-04-16T13:56:38Z"
+            }
+          ]
         }
       ]
     },
@@ -25520,7 +25593,7 @@
       "labels": [],
       "body": "It's probably better for everyone if resolvers don't inspect the\r\nSvcParams, but it's not really a requirement, and it has been a\r\ncontroversial point due to implementation details and RDATA-based\r\nfiltering.",
       "createdAt": "2021-04-08T14:38:15Z",
-      "updatedAt": "2021-04-09T19:54:55Z",
+      "updatedAt": "2021-04-16T02:55:12Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "1b9fb2e671d04766595c81a5198e13472491c06c",
@@ -25531,7 +25604,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This seems like entering into risky territory.  A big part of the current SHOULD NOT text is that there is much more ossification risk if recursive resolvers start looking at parameters.  It's critical that we be able to add new parameters without recursive resolvers looking at them.  (SHOULD NOT does not prevent them from doing so if they have a good reason to do so.)  ",
+          "createdAt": "2021-04-16T02:55:12Z",
+          "updatedAt": "2021-04-16T02:55:12Z"
+        }
+      ],
       "reviews": [
         {
           "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjMxNDg4NjIx",
@@ -25573,7 +25654,7 @@
       "labels": [],
       "body": "This change trades normative language for more explanation about how to\r\nchoose an appropriate default set for a scheme.",
       "createdAt": "2021-04-09T17:07:49Z",
-      "updatedAt": "2021-04-09T18:48:00Z",
+      "updatedAt": "2021-04-16T02:56:43Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "1b9fb2e671d04766595c81a5198e13472491c06c",
@@ -25591,6 +25672,13 @@
           "body": "See https://github.com/bemasc/svcb-dns/pull/2",
           "createdAt": "2021-04-09T17:25:12Z",
           "updatedAt": "2021-04-09T17:25:12Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Given that this is guidance for specification-writers this makes sense.  ",
+          "createdAt": "2021-04-16T02:56:43Z",
+          "updatedAt": "2021-04-16T02:56:43Z"
         }
       ],
       "reviews": [
