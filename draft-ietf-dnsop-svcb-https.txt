@@ -90,6 +90,7 @@ Table of Contents
      4.1.  Authoritative servers
      4.2.  Recursive resolvers
      4.3.  General requirements
+     4.4.  EDNS Client Subnet (ECS)
    5.  Performance optimizations
      5.1.  Optimistic pre-connection and connection reuse
      5.2.  Generating and using incomplete responses
@@ -716,9 +717,11 @@ Table of Contents
 
    When replying to a SVCB query, authoritative DNS servers SHOULD
    return A, AAAA, and SVCB records in the Additional Section for any
-   in-bailiwick TargetNames.  If the zone is signed, the server SHOULD
-   also include positive or negative DNSSEC responses for these records
-   in the Additional section.
+   TargetNames that are in the zone.  If the zone is signed, the server
+   SHOULD also include positive or negative DNSSEC responses for these
+   records in the Additional section.
+
+   See Section 4.4 for exceptions.
 
 4.2.  Recursive resolvers
 
@@ -776,6 +779,39 @@ Table of Contents
    MUST accompany each RRSet in the Additional section with the same
    DNSSEC-related records that they would send when providing that RRSet
    as an Answer (e.g.  RRSIG, NSEC, NSEC3).
+
+   According to Section 5.4.1 of [RFC2181], "Unauthenticated RRs
+   received and cached from ... the additional data section ... should
+   not be cached in such a way that they would ever be returned as
+   answers to a received query.  They may be returned as additional
+   information where appropriate.".  Recursive resolvers therefore MAY
+   cache records from the Additional section for use in populating
+   Additional section responses, and MAY cache them for general use if
+   they are authenticated by DNSSEC.
+
+4.4.  EDNS Client Subnet (ECS)
+
+   The EDNS Client Subnet option (ECS, [RFC7871]) allows recursive
+   resolvers to request IP addresses that are suitable for a particular
+   client IP range.  SVCB records may contain IP addresses (in ipv*hint
+   SvcParams), or direct users to a subnet-specific TargetName, so
+   recursive resolvers SHOULD include the same ECS option in SVCB
+   queries as in A/AAAA queries.
+
+   According to Section 7.3.1 of [RFC7871], "Any records from [the
+   Additional section] MUST NOT be tied to a network".  Accordingly,
+   when processing a response whose QTYPE is SVCB-compatible, resolvers
+   SHOULD treat any records in the Additional section as having SOURCE
+   PREFIX-LENGTH zero and SCOPE PREFIX-LENGTH as specified in the ECS
+   option.  Authoritative servers MUST omit such records if they are not
+   suitable for use by any stub resolvers that set SOURCE PREFIX-LENGTH
+   to zero.  This will cause the resolver to perform a followup query
+   that can receive properly tailored ECS.  (This is similar to the
+   usage of CNAME with ECS discussed in [RFC7871] Section 7.2.1.)
+
+   Authoritative servers that omit Additional records can avoid the
+   added latency of a followup query by following the advice in
+   Section 10.2.
 
 5.  Performance optimizations
 
@@ -1804,6 +1840,10 @@ Table of Contents
               DOI 10.17487/RFC2119, March 1997,
               <https://datatracker.ietf.org/doc/html/rfc2119>.
 
+   [RFC2181]  Elz, R. and R. Bush, "Clarifications to the DNS
+              Specification", RFC 2181, DOI 10.17487/RFC2181, July 1997,
+              <https://datatracker.ietf.org/doc/html/rfc2181>.
+
    [RFC3225]  Conrad, D., "Indicating Resolver Support of DNSSEC",
               RFC 3225, DOI 10.17487/RFC3225, December 2001,
               <https://datatracker.ietf.org/doc/html/rfc3225>.
@@ -1847,6 +1887,11 @@ Table of Contents
               and Registration Procedures for URI Schemes", BCP 35,
               RFC 7595, DOI 10.17487/RFC7595, June 2015,
               <https://datatracker.ietf.org/doc/html/rfc7595>.
+
+   [RFC7871]  Contavalli, C., van der Gaast, W., Lawrence, D., and W.
+              Kumari, "Client Subnet in DNS Queries", RFC 7871,
+              DOI 10.17487/RFC7871, May 2016,
+              <https://datatracker.ietf.org/doc/html/rfc7871>.
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
