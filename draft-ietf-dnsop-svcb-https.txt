@@ -5,9 +5,9 @@
 DNSOP Working Group                                          B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 18 September 2021                                     E. Nygren
+Expires: 18 October 2021                                       E. Nygren
                                                      Akamai Technologies
-                                                           17 March 2021
+                                                           16 April 2021
 
 
  Service binding and parameter specification via the DNS (DNS SVCB and
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 September 2021.
+   This Internet-Draft will expire on 18 October 2021.
 
 Copyright Notice
 
@@ -881,13 +881,14 @@ Table of Contents
    (Section 2.4.3).
 
    Each scheme that uses this SvcParamKey defines a "default set" of
-   supported ALPNs, which SHOULD NOT be empty.  To determine the set of
-   protocol suites supported by an endpoint (the "SVCB ALPN set"), the
-   client adds the default set to the list of "alpn-id"s unless the "no-
-   default-alpn" SvcParamKey is present.  The presence of an ALPN
-   protocol in the SVCB ALPN set indicates that this service endpoint,
-   described by TargetName and the other parameters (e.g. "port") offers
-   service with the protocol suite associated with this ALPN protocol.
+   ALPNs that are supported by nearly all clients and servers, which MAY
+   be empty.  To determine the set of protocol suites supported by an
+   endpoint (the "SVCB ALPN set"), the client adds the default set to
+   the list of "alpn-id"s unless the "no-default-alpn" SvcParamKey is
+   present.  The presence of an ALPN protocol in the SVCB ALPN set
+   indicates that this service endpoint, described by TargetName and the
+   other parameters (e.g. "port") offers service with the protocol suite
+   associated with this ALPN protocol.
 
    ALPN protocol names that do not uniquely identify a protocol suite
    (e.g. an Identification Sequence that can be used with both TLS and
